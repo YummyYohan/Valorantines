@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Will You Be My Valentine?</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap');
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at top, #ff4655 0%, #0f1923 40%, #000 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      overflow: hidden;
+    }
+
+    /* ---------------- CARD ---------------- */
+
+    .card {
+      background: rgba(15, 25, 35, 0.95);
+      border: 2px solid #ff4655;
+      padding: 50px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(255, 70, 85, 0.4);
+      max-width: 500px;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    p {
+      opacity: 0.85;
+      margin-bottom: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      position: relative;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #yesBtn {
+      background: #ff4655;
+      color: black;
+      box-shadow: 0 0 15px rgba(255, 70, 85, 0.7);
+    }
+
+    #yesBtn:hover {
+      transform: scale(1.1);
+    }
+
+    #noBtn {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+      position: relative;
+    }
+
+    /* ---------------- VICTORY SCREEN ---------------- */
+
+    .victory {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #0f1923 0%, #050a0f 70%);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      animation: victoryFade 1s ease forwards;
+    }
+
+    .victory-bg-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 50vw;
+      height: 50vw;
+      transform: translate(-50%, -50%);
+      background-image: url("/valorant logo teal.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      opacity: 0.18;
+      filter:
+        drop-shadow(0 0 40px rgba(120, 255, 220, 0.35)) drop-shadow(0 0 90px rgba(120, 255, 220, 0.15)) blur(0.2px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+
+    .victory-content {
+      position: relative;
+      z-index: 2;
+      padding: 40px 120px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(15, 25, 35, 0.85);
+      backdrop-filter: blur(4px);
+      text-align: center;
+      box-shadow: 0 0 40px rgba(0, 255, 200, 0.1);
+    }
+
+    .victory-text {
+      display: block;
+      font-size: 4rem;
+      letter-spacing: 12px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .victory-sub {
+      display: block;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      opacity: 0.6;
+      text-transform: uppercase;
+    }
+
+    .victory-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right,
+          transparent,
+          rgba(255, 255, 255, 0.6),
+          transparent);
+    }
+
+    .victory-line.top {
+      top: -20px;
+    }
+
+    .victory-line.bottom {
+      bottom: -20px;
+    }
+
+    @keyframes victoryFade {
+      from {
+        opacity: 0;
+        transform: scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card" id="card">
+    <h1>Will You Be My Valentine?</h1>
+    <p>Valorant themed just for Sarah</p>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes 💘</button>
+      <button id="noBtn">No</button>
+    </div>
+  </div>
+
+  <div class="victory" id="victory">
+    <div class="victory-bg-logo"></div>
+
+
+    <div class="victory-content">
+      <span class="victory-text">VICTORY</span>
+      <span class="victory-sub">+33rr</span>
+      <div class="victory-line top"></div>
+      <div class="victory-line bottom"></div>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const card = document.getElementById('card');
+    const victory = document.getElementById('victory');
+
+    const noTexts = [
+      "Are you sure?",
+      "Think again.",
+      "Wrong choice.",
+      "Nice try.",
+      "You missed.",
+      "That’s not optimal.",
+      "Reconsider 👀",
+      "Clutch or kick?"
+    ];
+
+    let dodgeCount = 0;
+
+    noBtn.addEventListener('mouseover', () => {
+      dodgeCount++;
+
+      const x = Math.random() * (window.innerWidth - 200);
+      const y = Math.random() * (window.innerHeight - 200);
+
+      noBtn.style.position = "fixed";
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+
+      noBtn.textContent = noTexts[dodgeCount % noTexts.length];
+
+      if (dodgeCount > 5) noBtn.style.transform = "scale(0.7)";
+      if (dodgeCount > 8) noBtn.style.opacity = "0.6";
+      if (dodgeCount > 12) noBtn.style.display = "none";
+    });
+
+    yesBtn.addEventListener('click', () => {
+      card.style.display = "none";
+      victory.style.display = "flex";
+    });
+  </script>
+
+</body>
+
+</html>
